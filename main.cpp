@@ -136,6 +136,47 @@ public:
     }
 };
 
+class Vector2 {
+public:
+    int x = 0;
+    int y = 0;
+    Vector2() = default;
+    Vector2(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
+    Vector2& operator=(Vector2 other) {
+        x = other.x;
+        y = other.y;
+        return *this;
+    }
+};
+
+class TextBox{
+public:
+    Vector2 dimensions;
+    Vector2 position;
+    sf::RectangleShape box;
+    TextBox(Vector2 dimensions, Vector2 position) {
+        this->dimensions = dimensions;
+        this->position = position;
+    }
+
+    void setSize(Vector2 size) {
+        dimensions = size;
+    }
+
+    void setPosition(Vector2 position) {
+        this->position = position;
+    }
+
+    void render(sf::RenderWindow &window) {
+        box.setSize(sf::Vector2f((float)dimensions.x, (float)dimensions.y));
+        box.setPosition((float)position.x, (float)position.y);
+        window.draw(box);
+    }
+};
+
 int main() {
     // Setup
 
@@ -170,6 +211,10 @@ int main() {
     float circleRadius = 10.0f;
     circle.setRadius(circleRadius);
     circle.setFillColor(sf::Color::White);
+
+    // Text box
+    TextBox box({50,20}, {60,60});
+    std::cout << box.dimensions.x << "\n";
 
 //    sf::RectangleShape dot(sf::Vector2f(1.f, 1.f));
 //    sf::RectangleShape vline(sf::Vector2f(5.f, 150.f));
@@ -243,6 +288,7 @@ int main() {
             circle.setPosition((float)line.axle[0]-circleRadius, (float)line.axle[1]-circleRadius);
             window.draw(circle);
         }
+        box.render(window);
         window.display();
     }
     return 0;
